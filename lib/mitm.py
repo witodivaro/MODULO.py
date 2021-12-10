@@ -1,22 +1,21 @@
 import gmpy2 as math
 
-from lib.mod import addMod, multiplyMod
+from lib import mod
 
 
-def findMITM(hash, g, b, p):
+def find_mitm(hash, g, b, p):
     '''
         Finds (g^b)^x relative to the h / (g ^ x) in hash
     '''
 
-    gToB = pow(g, b)
-    gToBModP = math.f_mod(gToB, p)
-    gToPower = 1
+    g_to_b_mod_p = mod.exp_mod(g, b, p)
+    g_to_power = 1
 
     for x0 in range(1, b):
-        gToPower = multiplyMod(gToPower, gToBModP, p)
+        g_to_power = mod.mul_mod(g_to_power, g_to_b_mod_p, p)
 
         try:
-            x1 = hash[str(gToPower)]
+            x1 = hash[str(g_to_power)]
             return [x0, x1]
         except KeyError:
             pass

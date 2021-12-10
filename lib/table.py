@@ -1,25 +1,21 @@
 import gmpy2 as math
 
-from lib.mod import multiplyMod
+from lib import mod
 
 
-def buildHashTable(h, g, b, p):
-    '''
-    Build (h / g ^ x) mod p hash table
-    '''
+def build_hash_table(h, g, b, p):
+    """Builds hash table for h / (g^x)"""
+
     hash = {}
 
-    gToMaxX = pow(g, b - 1)
-    gToMaxXModP = math.f_mod(gToMaxX, p)
-    gToMaxXModPInverted = math.invert(gToMaxXModP, p)
-    hDividedByG = multiplyMod(h, gToMaxXModPInverted, p)
-    hDividedByGModP = math.f_mod(hDividedByG, p)
+    g_to_max_x_mod_p = mod.exp_mod(g, b - 1, p)
+    g_to_max_x_mod_p_inverted = math.invert(g_to_max_x_mod_p, p)
+
+    h_divided_by_g_mod_p = mod.mul_mod(h, g_to_max_x_mod_p_inverted, p)
 
     for x in range(b - 1, 1, -1):
-        hash[str(hDividedByGModP)] = x
+        hash[str(h_divided_by_g_mod_p)] = x
 
-        # (ab) mod N == (a mod N)(b mod N) mod N
-        # https://math.stackexchange.com/questions/2416119/rules-for-modulus-and-multiplication
-        hDividedByGModP = multiplyMod(hDividedByGModP, g, p)
+        h_divided_by_g_mod_p = mod.mul_mod(h_divided_by_g_mod_p, g, p)
 
     return hash

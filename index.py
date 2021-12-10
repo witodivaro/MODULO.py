@@ -12,13 +12,13 @@ g = gmpy2.mpz(117178298803662070095161175963353670885580849999989522055999794590
 h = gmpy2.mpz(3239475104050450443565264378728065788649097520952449527834792452971981976143292558073856937958553180532878928001494706097394108577585732452307673444020333)
 b = gmpy2.mpz(pow(2, 20))
 
-buildStart = time()
-hash = table.buildHashTable(h, g, b, p)
-print(f'Hash table building took: {time() - buildStart} seconds')
+build_start_time = time()
+hash = table.build_hash_table(h, g, b, p)
+print(f'Hash table building took: {time() - build_start_time} seconds')
 
-searchStart = time()
-[x0, x1] = mitm.findMITM(hash, g, b, p)
-print(f'Searching table took: {time() - searchStart} seconds')
+search_start_time = time()
+[x0, x1] = mitm.find_mitm(hash, g, b, p)
+print(f'Searching table took: {time() - search_start_time} seconds')
 
 x = x0 * b + x1
 
